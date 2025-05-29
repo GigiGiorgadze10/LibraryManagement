@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/Services/Interfaces/IBookService.cs
-using LibraryManagement.Application.DTOs.BookDtos;
+﻿using LibraryManagement.Application.DTOs.BookDtos;
 using System.Threading.Tasks;
 
 namespace LibraryManagement.Application.Services.Interfaces

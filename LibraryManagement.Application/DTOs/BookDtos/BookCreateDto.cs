@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/DTOs/BookDtos/BookCreateDto.cs
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagement.Application.DTOs.BookDtos
 {
@@ -22,7 +21,7 @@ namespace LibraryManagement.Application.DTOs.BookDtos
         public int Pages { get; set; }
 
         [Required(ErrorMessage = "Publication year is required.")]
-        // Further validation for year range can be done in FluentValidation or service layer
+  
         public int PublicationYear { get; set; }
     }
 }

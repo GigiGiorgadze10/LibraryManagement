@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/Services/Interfaces/IAuthorService.cs
-using LibraryManagement.Application.DTOs.AuthorDtos;
+﻿using LibraryManagement.Application.DTOs.AuthorDtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

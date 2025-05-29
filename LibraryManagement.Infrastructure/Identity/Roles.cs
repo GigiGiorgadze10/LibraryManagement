@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Identity/Roles.cs
-namespace LibraryManagement.Infrastructure.Identity
+﻿namespace LibraryManagement.Infrastructure.Identity
 {
     public static class Roles
     {

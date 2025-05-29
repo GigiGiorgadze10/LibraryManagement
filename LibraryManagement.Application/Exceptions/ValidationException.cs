@@ -21,7 +21,7 @@ namespace LibraryManagement.Application.Exceptions
         }
 
         public ValidationException(IEnumerable<ValidationFailure> failures)
-            : this() // Calls the base constructor
+            : this() 
         {
             Errors = failures
                 .GroupBy(e => e.PropertyName, e => e.ErrorMessage)

@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagement.Infrastructure.Migrations
 {
-    using LibraryManagement.Infrastructure.Persistence; // ✅ ADD THIS if DbInitializer is in this namespace
+    using LibraryManagement.Infrastructure.Persistence; 
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -31,7 +31,7 @@
             //    );
             //
 
-            // ✅ Call your custom DbInitializer's Seed method here
+         
             DbInitializer.Seed(context);
         }
     }

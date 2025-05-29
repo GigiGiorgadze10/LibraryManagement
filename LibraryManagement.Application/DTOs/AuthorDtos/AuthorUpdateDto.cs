@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/DTOs/AuthorDtos/AuthorUpdateDto.cs
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagement.Application.DTOs.AuthorDtos

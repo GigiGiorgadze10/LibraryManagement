@@ -49,27 +49,24 @@ namespace LibraryManagement.Application.Services
             return _mapper.Map<GenreReadDto>(genre);
         }
 
-        // ✅ ADDED UpdateGenreAsync
         public async Task<bool> UpdateGenreAsync(GenreUpdateDto genreUpdateDto)
         {
             var genre = await _unitOfWork.Genres.GetByIdAsync(genreUpdateDto.Id);
             if (genre == null)
                 throw new NotFoundException(nameof(Genre), genreUpdateDto.Id);
 
-            // Check if another genre with the new name already exists (excluding the current one)
             var existingGenreByName = (await _unitOfWork.Genres.FindAsync(g => g.Id != genreUpdateDto.Id && g.Name.ToLower() == genreUpdateDto.Name.ToLower())).FirstOrDefault();
             if (existingGenreByName != null)
             {
                 throw new ValidationException($"Another genre with the name '{genreUpdateDto.Name}' already exists.");
             }
 
-            _mapper.Map(genreUpdateDto, genre); // Update properties from DTO to entity
-            _unitOfWork.Genres.Update(genre);    // Mark entity as modified
+            _mapper.Map(genreUpdateDto, genre); 
+            _unitOfWork.Genres.Update(genre);   
             await _unitOfWork.CompleteAsync();
             return true;
         }
 
-        // ✅ ADDED DeleteGenreAsync
         public async Task<bool> DeleteGenreAsync(int id)
         {
             var genre = await _unitOfWork.Genres.GetByIdAsync(id);

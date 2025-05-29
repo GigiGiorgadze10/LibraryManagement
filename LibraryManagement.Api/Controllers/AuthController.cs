@@ -1,13 +1,12 @@
-﻿// src/LibraryManagement.Api/Controllers/AuthController.cs
-using LibraryManagement.Application.Contracts.Infrastructure; // For IJwtTokenGenerator
+﻿using LibraryManagement.Application.Contracts.Infrastructure; 
 using LibraryManagement.Application.DTOs.AuthDtos;
-using LibraryManagement.Infrastructure.Identity; // For AppUser, AppUserManager, Roles
+using LibraryManagement.Infrastructure.Identity; 
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin; // For GetOwinContext() and GetUserManager<>()
-using System; // For Convert, DateTime
-using System.Collections.Generic; // For IList
-using System.Configuration; // For ConfigurationManager
-using System.Net.Http; // For Request
+using Microsoft.AspNet.Identity.Owin;
+using System; 
+using System.Collections.Generic; 
+using System.Configuration; 
+using System.Net.Http; 
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -17,13 +16,11 @@ namespace LibraryManagement.Api.Controllers
     [RoutePrefix("api/auth")]
     public class AuthController : ApiController
     {
-        // Property to safely access UserManager, resolving from OWIN context.
-        // This relies on AppUserManager being correctly registered with app.CreatePerOwinContext in Startup.cs
         private AppUserManager UserManager => Request.GetOwinContext().GetUserManager<AppUserManager>();
 
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public AuthController(IJwtTokenGenerator jwtTokenGenerator) // Autofac injects IJwtTokenGenerator
+        public AuthController(IJwtTokenGenerator jwtTokenGenerator)
         {
             _jwtTokenGenerator = jwtTokenGenerator ?? throw new ArgumentNullException(nameof(jwtTokenGenerator));
         }
@@ -66,7 +63,7 @@ namespace LibraryManagement.Api.Controllers
 
             if (user == null)
             {
-                return Unauthorized(); // Or BadRequest("Invalid email or password.")
+                return Unauthorized(); 
             }
 
             var tokenString = await _jwtTokenGenerator.GenerateTokenAsync(user.Id);
@@ -76,7 +73,7 @@ namespace LibraryManagement.Api.Controllers
             {
                 Token = tokenString,
                 Email = user.Email,
-                Roles = userRoles, // Directly assign IList<string>
+                Roles = userRoles, 
                 Expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(ConfigurationManager.AppSettings["jwt:DurationInMinutes"]))
             };
 
@@ -100,15 +97,13 @@ namespace LibraryManagement.Api.Controllers
                     }
                 }
 
-                if (ModelState.IsValid) // This means no errors were added to model state despite result not succeeding
+                if (ModelState.IsValid) 
                 {
-                    // Return a more generic error if IdentityResult failed but didn't populate ModelState
                     return BadRequest("User operation failed. Please check the details.");
                 }
                 return BadRequest(ModelState);
             }
-            return null; // Should not be reached if result.Succeeded is false and errors are handled.
-                         // Can indicate an issue if it is.
+            return null; 
         }
     }
 }

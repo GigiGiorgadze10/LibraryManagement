@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/DTOs/BookDtos/BookUpdateDto.cs
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagement.Application.DTOs.BookDtos
 {

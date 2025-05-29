@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/Exceptions/NotFoundException.cs
-using System;
+﻿using System;
 
 namespace LibraryManagement.Application.Exceptions
 {

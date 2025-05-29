@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Persistence/Repositories/Repository.cs
-using LibraryManagement.Domain.Interfaces;
+﻿using LibraryManagement.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -39,7 +38,7 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
         public virtual async Task AddAsync(TEntity entity)
         {
             DbSet.Add(entity);
-            await Task.CompletedTask; // EF6 Add is synchronous, Task.CompletedTask for async signature
+            await Task.CompletedTask; 
         }
 
         public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
@@ -60,8 +59,6 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
 
         public virtual void Update(TEntity entity)
         {
-            // EF6 tracks changes automatically if the entity was fetched from the same context.
-            // If it's a detached entity, you might need to attach and set state.
             DbSet.Attach(entity);
             Context.Entry(entity).State = EntityState.Modified;
         }

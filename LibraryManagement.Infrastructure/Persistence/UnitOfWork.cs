@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Persistence/UnitOfWork.cs
-using LibraryManagement.Infrastructure.Persistence.Repositories;
+﻿using LibraryManagement.Infrastructure.Persistence.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using LibraryManagement.Domain.Interfaces;
 using System.Threading.Tasks;
@@ -16,9 +15,9 @@ namespace LibraryManagement.Infrastructure.Persistence
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
-            Authors = new AuthorRepository(_context); // Pass context
-            Books = new BookRepository(_context);   // Pass context
-            Genres = new GenreRepository(_context);  // Pass context
+            Authors = new AuthorRepository(_context);
+            Books = new BookRepository(_context);   
+            Genres = new GenreRepository(_context);  
         }
 
         public async Task<int> CompleteAsync()

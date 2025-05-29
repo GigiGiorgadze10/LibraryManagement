@@ -3,7 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework; // For UserStore, RoleStore, IdentityRole
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using LibraryManagement.Infrastructure.Persistence; // For AppDbContext
+using LibraryManagement.Infrastructure.Persistence; 
 using LibraryManagement.Infrastructure.Identity;
 
 namespace LibraryManagement.Infrastructure.Identity
@@ -18,13 +18,12 @@ namespace LibraryManagement.Infrastructure.Identity
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
             var manager = new AppUserManager(new UserStore<AppUser>(context.Get<AppDbContext>()));
-            // Configure validation logic for usernames
+         
             manager.UserValidator = new UserValidator<AppUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
-            // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
@@ -33,7 +32,6 @@ namespace LibraryManagement.Infrastructure.Identity
                 // RequireLowercase = true,
                 // RequireUppercase = true,
             };
-            // Configure user lockout defaults (optional)
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = System.TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
@@ -48,8 +46,7 @@ namespace LibraryManagement.Infrastructure.Identity
         }
     }
 
-    // Optional: AppRoleManager
-    public class AppRoleManager : RoleManager<IdentityRole> // Use IdentityRole
+    public class AppRoleManager : RoleManager<IdentityRole> 
     {
         public AppRoleManager(IRoleStore<IdentityRole, string> roleStore)
             : base(roleStore)
@@ -58,7 +55,7 @@ namespace LibraryManagement.Infrastructure.Identity
 
         public static AppRoleManager Create(IdentityFactoryOptions<AppRoleManager> options, IOwinContext context)
         {
-            return new AppRoleManager(new RoleStore<IdentityRole>(context.Get<AppDbContext>())); // Use IdentityRole
+            return new AppRoleManager(new RoleStore<IdentityRole>(context.Get<AppDbContext>())); 
         }
     }
 }

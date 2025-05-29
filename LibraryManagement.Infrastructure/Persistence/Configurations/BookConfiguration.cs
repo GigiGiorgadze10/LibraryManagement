@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Persistence/Configurations/BookConfiguration.cs
-using LibraryManagement.Domain.Entities;
+﻿using LibraryManagement.Domain.Entities;
 using System.Data.Entity.ModelConfiguration;
 
 namespace LibraryManagement.Infrastructure.Persistence.Configurations
@@ -22,8 +21,6 @@ namespace LibraryManagement.Infrastructure.Persistence.Configurations
             Property(b => b.PublicationYear)
                 .IsRequired();
 
-            // Relationship: Book belongs to one Author (already configured in AuthorConfiguration implicitly via Author.Books)
-            // Relationship: Book belongs to one Genre
             HasRequired(b => b.Genre)
                 .WithMany(g => g.Books)
                 .HasForeignKey(b => b.GenreId)

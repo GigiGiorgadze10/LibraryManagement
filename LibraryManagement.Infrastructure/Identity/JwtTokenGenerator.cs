@@ -1,16 +1,15 @@
-﻿// src/LibraryManagement.Infrastructure/Identity/JwtTokenGenerator.cs
-using LibraryManagement.Application.Contracts.Infrastructure;
+﻿using LibraryManagement.Application.Contracts.Infrastructure;
 using LibraryManagement.Infrastructure.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.Configuration; // For ConfigurationManager
+using System.Configuration; 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text; // Keep for other uses if any, but not directly for secret if it's Base64Url
+using System.Text; 
 using System.Threading.Tasks;
-using Microsoft.Owin.Security.DataHandler.Encoder; // ✅ ADD THIS FOR TextEncodings
+using Microsoft.Owin.Security.DataHandler.Encoder; 
 
 namespace LibraryManagement.Infrastructure.Identity
 {
@@ -45,7 +44,6 @@ namespace LibraryManagement.Infrastructure.Identity
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            // ✅ CORRECTED KEY DERIVATION
             var secretBytes = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["jwt:Secret"]);
             var key = new SymmetricSecurityKey(secretBytes);
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

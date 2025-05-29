@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Persistence/Configurations/GenreConfiguration.cs
-using LibraryManagement.Domain.Entities;
+﻿using LibraryManagement.Domain.Entities;
 using System.Data.Entity.ModelConfiguration;
 
 namespace LibraryManagement.Infrastructure.Persistence.Configurations
@@ -16,7 +15,6 @@ namespace LibraryManagement.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            // Relationship: Genre has many Books (implicitly configured via Book.Genre)
         }
     }
 }

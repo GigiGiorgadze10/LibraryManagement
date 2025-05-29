@@ -1,12 +1,9 @@
-﻿// src/LibraryManagementSystem.Api/Providers/CustomJwtFormat.cs
-// Ensure this class definition exists ONLY ONCE in this file.
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataHandler.Encoder; // For TextEncodings
+﻿using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataHandler.Encoder; 
 using System;
 using System.Configuration;
-// Ensure these usings are correct for System.IdentityModel.Tokens.Jwt v6.x
-using Microsoft.IdentityModel.Tokens; // For SymmetricSecurityKey, SigningCredentials, SecurityAlgorithms
-using System.IdentityModel.Tokens.Jwt; // For JwtSecurityToken, JwtSecurityTokenHandler
+using Microsoft.IdentityModel.Tokens; 
+using System.IdentityModel.Tokens.Jwt; 
 
 namespace LibraryManagement.Api.Providers
 {
@@ -29,27 +26,25 @@ namespace LibraryManagement.Api.Providers
             if (data == null) throw new ArgumentNullException(nameof(data));
 
             var signingKey = new SymmetricSecurityKey(_secret);
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256); // Use from Microsoft.IdentityModel.Tokens
+            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256); 
 
             var issued = data.Properties.IssuedUtc;
             var expires = data.Properties.ExpiresUtc;
 
-            var token = new JwtSecurityToken( // Use from System.IdentityModel.Tokens.Jwt
+            var token = new JwtSecurityToken( 
                 _issuer,
                 _audience,
                 data.Identity.Claims,
-                issued?.UtcDateTime, // Convert DateTimeOffset? to DateTime?
+                issued?.UtcDateTime, 
                 expires?.UtcDateTime,
                 signingCredentials);
 
-            var handler = new JwtSecurityTokenHandler(); // Use from System.IdentityModel.Tokens.Jwt
+            var handler = new JwtSecurityTokenHandler(); 
             return handler.WriteToken(token);
         }
 
         public AuthenticationTicket Unprotect(string protectedText)
         {
-            // This ISecureDataFormat is used only for issuing (Protect method).
-            // The validation of the token happens in the JwtBearerAuthenticationMiddleware.
             throw new NotImplementedException("Unprotect is not implemented for this JWT formatter as it's only used for token issuance.");
         }
     }

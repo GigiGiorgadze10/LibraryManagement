@@ -8,7 +8,6 @@ namespace LibraryManagement.Application.Contracts.Infrastructure
 {
     public interface IJwtTokenGenerator
     {
-        // Accepts userId (string) instead of AppUser to keep Application layer independent of Infrastructure concrete types
         Task<string> GenerateTokenAsync(string userId);
     }
 }

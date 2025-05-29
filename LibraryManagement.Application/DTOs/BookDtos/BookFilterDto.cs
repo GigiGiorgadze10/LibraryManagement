@@ -1,6 +1,5 @@
-﻿// src/LibraryManagementSystem.Application/DTOs/BookDtos/BookFilterDto.cs
-using LibraryManagement.Application.Common;
-using LibraryManagement.Domain.Enums; // For SortDirection
+﻿using LibraryManagement.Application.Common;
+using LibraryManagement.Domain.Enums; 
 
 namespace LibraryManagement.Application.DTOs.BookDtos
 {
@@ -10,7 +9,7 @@ namespace LibraryManagement.Application.DTOs.BookDtos
         public int? MaxPages { get; set; }
         public int? GenreId { get; set; }
         public int? AuthorId { get; set; }
-        public string SortBy { get; set; } // e.g., "Title", "Pages", "PublicationYear"
+        public string SortBy { get; set; } 
         public SortDirection SortDirection { get; set; } = SortDirection.Asc;
     }
 }

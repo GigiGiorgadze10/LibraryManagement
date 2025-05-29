@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Persistence/Configurations/AuthorConfiguration.cs
-using LibraryManagement.Domain.Entities;
+﻿using LibraryManagement.Domain.Entities;
 using System.Data.Entity.ModelConfiguration;
 
 namespace LibraryManagement.Infrastructure.Persistence.Configurations
@@ -8,7 +7,7 @@ namespace LibraryManagement.Infrastructure.Persistence.Configurations
     {
         public AuthorConfiguration()
         {
-            ToTable("Authors"); // Explicitly set table name
+            ToTable("Authors"); 
 
             HasKey(a => a.Id);
 
@@ -19,11 +18,10 @@ namespace LibraryManagement.Infrastructure.Persistence.Configurations
             Property(a => a.BirthDate)
                 .IsRequired();
 
-            // Relationship: Author has many Books
             HasMany(a => a.Books)
-                .WithRequired(b => b.Author) // Book requires an Author
+                .WithRequired(b => b.Author) 
                 .HasForeignKey(b => b.AuthorId)
-                .WillCascadeOnDelete(false); // Prevent cascade delete if an author is deleted
+                .WillCascadeOnDelete(false); 
         }
     }
 }

@@ -1,11 +1,9 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Persistence/DbInitializer.cs
-using LibraryManagement.Infrastructure.Identity;
+﻿using LibraryManagement.Infrastructure.Identity;
 using LibraryManagement.Infrastructure.Persistence;
 using LibraryManagement.Domain.Entities;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework; // For IdentityRole, RoleManager, UserStore etc.
+using Microsoft.AspNet.Identity.EntityFramework; 
 using System;
-// using System.Data.Entity; // Not strictly needed if only using context
 using System.Linq;
 
 namespace LibraryManagement.Infrastructure.Persistence
@@ -14,7 +12,6 @@ namespace LibraryManagement.Infrastructure.Persistence
     {
         public static void Seed(AppDbContext context)
         {
-            // Ensure Identity roles
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             if (!roleManager.RoleExists(Roles.Admin))
             {
@@ -24,9 +21,8 @@ namespace LibraryManagement.Infrastructure.Persistence
             {
                 roleManager.Create(new IdentityRole(Roles.User));
             }
-            context.SaveChanges(); // Save roles before creating users
+            context.SaveChanges(); 
 
-            // Ensure Admin user
             var userManager = new UserManager<AppUser>(new UserStore<AppUser>(context));
             if (userManager.FindByName("admin@library.com") == null)
             {
@@ -36,7 +32,7 @@ namespace LibraryManagement.Infrastructure.Persistence
                     Email = "admin@library.com",
                     EmailConfirmed = true
                 };
-                var result = userManager.Create(adminUser, "Admin@123"); // Change password in production
+                var result = userManager.Create(adminUser, "Admin@123"); 
                 if (result.Succeeded)
                 {
                     userManager.AddToRole(adminUser.Id, Roles.Admin);
@@ -44,7 +40,6 @@ namespace LibraryManagement.Infrastructure.Persistence
             }
             context.SaveChanges();
 
-            // Seed Genres if empty
             if (!context.Genres.Any())
             {
                 var genres = new[]
@@ -59,7 +54,6 @@ namespace LibraryManagement.Infrastructure.Persistence
                 context.SaveChanges();
             }
 
-            // Seed Authors if empty
             if (!context.Authors.Any())
             {
                 var authors = new[]
@@ -72,7 +66,6 @@ namespace LibraryManagement.Infrastructure.Persistence
                 context.SaveChanges();
             }
 
-            // Seed Books (Example, ensure AuthorId and GenreId match existing seeded data)
             if (!context.Books.Any() && context.Authors.Any() && context.Genres.Any())
             {
                 var author1 = context.Authors.Local.FirstOrDefault(a => a.FullName.Contains("Asimov")) ?? context.Authors.FirstOrDefault(a => a.FullName.Contains("Asimov"));

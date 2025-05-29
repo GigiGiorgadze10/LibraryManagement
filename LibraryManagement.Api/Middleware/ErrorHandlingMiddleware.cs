@@ -1,15 +1,13 @@
-﻿// src/LibraryManagementSystem.Api/Middleware/ErrorHandlingMiddleware.cs
-// Make sure this file and class definition exist ONLY ONCE in your project.
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using LibraryManagement.Application.Exceptions; // Your custom exceptions
-using FluentValidation; // For FluentValidation.ValidationException
+using LibraryManagement.Application.Exceptions; 
+using FluentValidation; 
 using System.Linq;
-using Newtonsoft.Json.Serialization; // For CamelCasePropertyNamesContractResolver
+using Newtonsoft.Json.Serialization;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace LibraryManagement.Api.Middleware
@@ -29,15 +27,14 @@ namespace LibraryManagement.Api.Middleware
             }
             catch (Exception ex)
             {
-                // Log the exception (e.g., using NLog, Serilog, or System.Diagnostics.Trace)
-                System.Diagnostics.Trace.TraceError($"Unhandled exception: {ex}"); // Basic tracing
+                System.Diagnostics.Trace.TraceError($"Unhandled exception: {ex}"); 
                 await HandleExceptionAsync(context, ex);
             }
         }
 
         private static Task HandleExceptionAsync(IOwinContext context, Exception exception)
         {
-            HttpStatusCode code = HttpStatusCode.InternalServerError; // Default
+            HttpStatusCode code = HttpStatusCode.InternalServerError; 
             object errorObject = new { message = "An unexpected error occurred." };
 
             if (exception is NotFoundException)
@@ -45,23 +42,22 @@ namespace LibraryManagement.Api.Middleware
                 code = HttpStatusCode.NotFound;
                 errorObject = new { message = exception.Message };
             }
-            else if (exception is Application.Exceptions.ValidationException appValidationException) // Your custom ValidationException
+            else if (exception is Application.Exceptions.ValidationException appValidationException) 
             {
                 code = HttpStatusCode.BadRequest;
                 errorObject = new { message = appValidationException.Message, errors = appValidationException.Errors };
             }
-            else if (exception is FluentValidation.ValidationException fluentValidationException) // FluentValidation's exception
+            else if (exception is FluentValidation.ValidationException fluentValidationException) 
             {
                 code = HttpStatusCode.BadRequest;
                 var errors = fluentValidationException.Errors
                     .GroupBy(e => e.PropertyName)
                     .ToDictionary(
-                        g => string.IsNullOrEmpty(g.Key) ? "general" : g.Key, // Handle empty property names
+                        g => string.IsNullOrEmpty(g.Key) ? "general" : g.Key, 
                         g => g.Select(e => e.ErrorMessage).ToArray()
                     );
                 errorObject = new { message = "Validation failed.", errors = errors };
             }
-            // Add more specific exception handling as needed
 
             var resultSettings = new JsonSerializerSettings
             {

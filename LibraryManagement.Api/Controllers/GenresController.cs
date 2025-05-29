@@ -1,8 +1,8 @@
 ﻿using LibraryManagement.Application.DTOs.GenreDtos;
 using LibraryManagement.Application.Services.Interfaces;
-using LibraryManagement.Infrastructure.Identity; // For Roles
+using LibraryManagement.Infrastructure.Identity;
 using System.Collections.Generic;
-using System.Net; // For HttpStatusCode
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -30,13 +30,12 @@ namespace LibraryManagement.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}", Name = "GetGenreById")] // Ensure route name is unique or specific if used elsewhere
+        [Route("{id:int}", Name = "GetGenreById")] 
         [Authorize(Roles = Roles.User + "," + Roles.Admin)]
         [ResponseType(typeof(GenreReadDto))]
         public async Task<IHttpActionResult> GetGenre(int id)
         {
             var genre = await _genreService.GetGenreByIdAsync(id);
-            // NotFoundException handled by ErrorHandlingMiddleware
             return Ok(genre);
         }
 
@@ -54,11 +53,10 @@ namespace LibraryManagement.Api.Controllers
             return CreatedAtRoute("GetGenreById", new { id = createdGenre.Id }, createdGenre);
         }
 
-        // ✅ ADDED PUT Action
         [HttpPut]
         [Route("{id:int}")]
-        [Authorize(Roles = Roles.Admin)] // Only Admin can update
-        [ResponseType(typeof(void))]     // Indicates no content for success
+        [Authorize(Roles = Roles.Admin)] 
+        [ResponseType(typeof(void))]     
         public async Task<IHttpActionResult> UpdateGenre(int id, [FromBody] GenreUpdateDto genreUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -70,21 +68,16 @@ namespace LibraryManagement.Api.Controllers
                 return BadRequest("ID mismatch in route and body.");
             }
 
-            // Assuming UpdateGenreAsync throws NotFoundException or ValidationException
-            // which will be handled by ErrorHandlingMiddleware
             await _genreService.UpdateGenreAsync(genreUpdateDto);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // ✅ ADDED DELETE Action
         [HttpDelete]
         [Route("{id:int}")]
-        [Authorize(Roles = Roles.Admin)] // Only Admin can delete
-        [ResponseType(typeof(void))]     // Indicates no content for success
+        [Authorize(Roles = Roles.Admin)] 
+        [ResponseType(typeof(void))]    
         public async Task<IHttpActionResult> DeleteGenre(int id)
         {
-            // Assuming DeleteGenreAsync throws NotFoundException
-            // which will be handled by ErrorHandlingMiddleware
             await _genreService.DeleteGenreAsync(id);
             return StatusCode(HttpStatusCode.NoContent);
         }

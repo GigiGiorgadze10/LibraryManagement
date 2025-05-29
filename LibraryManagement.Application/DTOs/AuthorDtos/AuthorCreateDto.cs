@@ -1,6 +1,5 @@
-﻿// src/LibraryManagementSystem.Application/DTOs/AuthorDtos/AuthorCreateDto.cs
-using System;
-using System.ComponentModel.DataAnnotations; // For basic validation attributes
+﻿using System;
+using System.ComponentModel.DataAnnotations; 
 
 namespace LibraryManagement.Application.DTOs.AuthorDtos
 {

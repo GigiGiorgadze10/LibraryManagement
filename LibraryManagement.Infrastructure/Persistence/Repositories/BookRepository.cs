@@ -1,12 +1,11 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Persistence/Repositories/BookRepository.cs
-using LibraryManagement.Infrastructure.Persistence.Repositories;
+﻿using LibraryManagement.Infrastructure.Persistence.Repositories;
 using LibraryManagement.Infrastructure.Persistence;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity; // For .Include()
+using System.Data.Entity; 
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -15,7 +14,7 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
 {
     public class BookRepository : Repository<Book>, IBookRepository
     {
-        public BookRepository(AppDbContext context) : base(context) // Pass AppDbContext
+        public BookRepository(AppDbContext context) : base(context)
         {
         }
 
@@ -29,9 +28,8 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
             string sortBy,
             SortDirection sortDirection)
         {
-            var query = DbSet.Include(b => b.Author).Include(b => b.Genre).AsQueryable(); // Eager load
+            var query = DbSet.Include(b => b.Author).Include(b => b.Genre).AsQueryable(); 
 
-            // Filtering
             if (minPages.HasValue)
                 query = query.Where(b => b.Pages >= minPages.Value);
             if (maxPages.HasValue)
@@ -43,7 +41,6 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
 
             var totalCount = await query.CountAsync();
 
-            // Sorting - C# 7.3 compatible
             if (!string.IsNullOrWhiteSpace(sortBy))
             {
                 string sortByLower = sortBy.ToLowerInvariant();
@@ -61,15 +58,14 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
                 }
                 else
                 {
-                    query = query.OrderBy(b => b.Id); // Default sort
+                    query = query.OrderBy(b => b.Id); 
                 }
             }
             else
             {
-                query = query.OrderBy(b => b.Id); // Default sort if sortBy is not provided
+                query = query.OrderBy(b => b.Id); 
             }
 
-            // Pagination
             var books = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
             return (books, totalCount);

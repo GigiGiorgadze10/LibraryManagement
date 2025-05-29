@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/DTOs/BookDtos/PaginatedBookResultDto.cs
-using LibraryManagement.Application.DTOs.BookDtos;
+﻿using LibraryManagement.Application.DTOs.BookDtos;
 using System.Collections.Generic;
 
 namespace LibraryManagement.Application.DTOs.BookDtos

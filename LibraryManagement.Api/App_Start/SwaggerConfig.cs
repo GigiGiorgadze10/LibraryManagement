@@ -1,10 +1,8 @@
-﻿// src/LibraryManagementSystem.Api/App_Start/SwaggerConfig.cs
-using System.Web.Http;
-using WebActivatorEx; // NuGet: WebActivatorEx
-using LibraryManagement.Api; // For AssignJwtSecurityRequirements
-using Swashbuckle.Application; // NuGet: Swashbuckle.Core
+﻿using System.Web.Http;
+using WebActivatorEx; 
+using LibraryManagement.Api; 
+using Swashbuckle.Application; 
 
-// Fully qualify PreApplicationStartMethod to avoid ambiguity
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
 namespace LibraryManagement.Api
@@ -19,14 +17,13 @@ namespace LibraryManagement.Api
                 .EnableSwagger(c =>
                 {
                     c.SingleApiVersion("v1", "Library Management API");
-                    c.PrettyPrint(); // Makes the JSON output more readable
+                    c.PrettyPrint();
 
-                    // Enable JWT token input in Swagger UI
                     c.ApiKey("Authorization")
                         .Description("JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"")
                         .Name("Authorization")
                         .In("header");
-                    c.OperationFilter<AssignJwtSecurityRequirements>(); // Custom filter to apply security
+                    c.OperationFilter<AssignJwtSecurityRequirements>(); 
                 })
                 .EnableSwaggerUi(c =>
                 {

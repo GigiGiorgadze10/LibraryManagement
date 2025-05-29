@@ -10,8 +10,7 @@ namespace LibraryManagement.Application.DTOs.AuthDtos
         public string Email { get; set; }
 
         [Required]
-        // Example: Add StringLength for more specific password requirements if needed by FluentValidation
-        // [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         public string Password { get; set; }
     }
 }
