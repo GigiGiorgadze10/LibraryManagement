@@ -10,6 +10,7 @@ namespace LibraryManagement.Application.Services.Interfaces
         Task<GenreReadDto> GetGenreByIdAsync(int id);
         Task<IEnumerable<GenreReadDto>> GetAllGenresAsync();
         Task<GenreReadDto> CreateGenreAsync(GenreCreateDto genreCreateDto);
-        // No Update or Delete for Genres as per PDF
+        Task<bool> UpdateGenreAsync(GenreUpdateDto genreUpdateDto); // ✅ ADD THIS
+        Task<bool> DeleteGenreAsync(int id);
     }
 }

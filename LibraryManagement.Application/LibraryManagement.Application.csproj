@@ -76,6 +76,7 @@
     <Compile Include="DTOs\BookDtos\PaginatedBookResultDto.cs" />
     <Compile Include="DTOs\GenreDtos\GenreCreateDto.cs" />
     <Compile Include="DTOs\GenreDtos\GenreReadDto.cs" />
+    <Compile Include="DTOs\GenreDtos\GenreUpdateDto.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Mappings\AutoMapperConfig.cs" />

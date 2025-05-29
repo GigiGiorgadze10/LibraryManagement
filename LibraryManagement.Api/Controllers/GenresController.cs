@@ -1,11 +1,11 @@
-﻿// src/LibraryManagementSystem.Api/Controllers/GenresController.cs
-using LibraryManagement.Application.DTOs.GenreDtos;
+﻿using LibraryManagement.Application.DTOs.GenreDtos;
 using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Infrastructure.Identity; // For Roles
-using System.Collections.Generic; // For IEnumerable
+using System.Collections.Generic;
+using System.Net; // For HttpStatusCode
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description; // For ApiResponseType
+using System.Web.Http.Description;
 
 namespace LibraryManagement.Api.Controllers
 {
@@ -21,7 +21,7 @@ namespace LibraryManagement.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        [Authorize(Roles = Roles.User + "," + Roles.Admin)] // User or Admin can view
+        [Authorize(Roles = Roles.User + "," + Roles.Admin)]
         [ResponseType(typeof(IEnumerable<GenreReadDto>))]
         public async Task<IHttpActionResult> GetAllGenres()
         {
@@ -30,7 +30,7 @@ namespace LibraryManagement.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}", Name = "GetGenreById")]
+        [Route("{id:int}", Name = "GetGenreById")] // Ensure route name is unique or specific if used elsewhere
         [Authorize(Roles = Roles.User + "," + Roles.Admin)]
         [ResponseType(typeof(GenreReadDto))]
         public async Task<IHttpActionResult> GetGenre(int id)
@@ -42,7 +42,7 @@ namespace LibraryManagement.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = Roles.Admin)] // Only Admin can create
+        [Authorize(Roles = Roles.Admin)]
         [ResponseType(typeof(GenreReadDto))]
         public async Task<IHttpActionResult> CreateGenre([FromBody] GenreCreateDto genreCreateDto)
         {
@@ -54,6 +54,39 @@ namespace LibraryManagement.Api.Controllers
             return CreatedAtRoute("GetGenreById", new { id = createdGenre.Id }, createdGenre);
         }
 
-        // No Update or Delete for Genres as per PDF requirement (Only Read/Create)
+        // ✅ ADDED PUT Action
+        [HttpPut]
+        [Route("{id:int}")]
+        [Authorize(Roles = Roles.Admin)] // Only Admin can update
+        [ResponseType(typeof(void))]     // Indicates no content for success
+        public async Task<IHttpActionResult> UpdateGenre(int id, [FromBody] GenreUpdateDto genreUpdateDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id != genreUpdateDto.Id)
+            {
+                return BadRequest("ID mismatch in route and body.");
+            }
+
+            // Assuming UpdateGenreAsync throws NotFoundException or ValidationException
+            // which will be handled by ErrorHandlingMiddleware
+            await _genreService.UpdateGenreAsync(genreUpdateDto);
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // ✅ ADDED DELETE Action
+        [HttpDelete]
+        [Route("{id:int}")]
+        [Authorize(Roles = Roles.Admin)] // Only Admin can delete
+        [ResponseType(typeof(void))]     // Indicates no content for success
+        public async Task<IHttpActionResult> DeleteGenre(int id)
+        {
+            // Assuming DeleteGenreAsync throws NotFoundException
+            // which will be handled by ErrorHandlingMiddleware
+            await _genreService.DeleteGenreAsync(id);
+            return StatusCode(HttpStatusCode.NoContent);
+        }
     }
 }

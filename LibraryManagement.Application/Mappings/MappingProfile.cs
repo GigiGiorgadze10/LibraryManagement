@@ -22,6 +22,7 @@ namespace LibraryManagement.Application.Mappings
 
             // Genre Mappings
             CreateMap<GenreCreateDto, Genre>();
+            CreateMap<GenreUpdateDto, Genre>();
             CreateMap<Genre, GenreReadDto>();
 
             // Book Mappings

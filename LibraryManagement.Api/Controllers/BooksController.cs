@@ -1,15 +1,15 @@
-﻿// src/LibraryManagementSystem.Api/Controllers/BooksController.cs
+﻿// src/LibraryManagement.Api/Controllers/BooksController.cs
 using LibraryManagement.Application.DTOs.BookDtos;
 using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Infrastructure.Identity; // For Roles
+using System; // For ArgumentNullException
 using System.Net;
-//using System.Net.Http; // Not strictly needed for IHttpActionResult and Request.GetOwinContext()
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description; // For ApiResponseType
-using System.Collections.Generic; // Added for IEnumerable in GetBooks response type
-using Microsoft.Owin; // For Request.GetOwinContext()
-using System.Net.Http;
+using System.Collections.Generic; // For IEnumerable
+using Microsoft.Owin; // For IOwinContext
+using System.Net.Http; // For Request.GetOwinContext()
 
 namespace LibraryManagement.Api.Controllers
 {
@@ -20,13 +20,13 @@ namespace LibraryManagement.Api.Controllers
 
         public BooksController(IBookService bookService) // Injected by Autofac
         {
-            _bookService = bookService;
+            _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
         }
 
         [HttpGet]
         [Route("")]
         [Authorize(Roles = Roles.User + "," + Roles.Admin)] // User or Admin
-        [ResponseType(typeof(IEnumerable<BookReadDto>))] // Actual items returned
+        [ResponseType(typeof(IEnumerable<BookReadDto>))] // Actual items returned in body
         public async Task<IHttpActionResult> GetBooks([FromUri] BookFilterDto filter)
         {
             if (filter == null) filter = new BookFilterDto(); // Default filter
@@ -45,13 +45,13 @@ namespace LibraryManagement.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}", Name = "GetBookById")] // Added route name for CreatedAtRoute
+        [Route("{id:int}", Name = "GetBookById")] // Named route for CreatedAtRoute
         [Authorize(Roles = Roles.User + "," + Roles.Admin)]
         [ResponseType(typeof(BookReadDto))]
         public async Task<IHttpActionResult> GetBook(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
-            // NotFoundException will be handled by ErrorHandlingMiddleware
+            // Assuming NotFoundException is handled by ErrorHandlingMiddleware
             return Ok(book);
         }
 
@@ -63,29 +63,33 @@ namespace LibraryManagement.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var createdBook = await _bookService.CreateBookAsync(bookCreateDto);
+            // Assuming exceptions from service (like validation or not found for author/genre)
+            // are handled by ErrorHandlingMiddleware
             return CreatedAtRoute("GetBookById", new { id = createdBook.Id }, createdBook);
         }
 
         [HttpPut]
         [Route("{id:int}")]
         [Authorize(Roles = Roles.Admin)]
+        [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> UpdateBook(int id, [FromBody] BookUpdateDto bookUpdateDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (id != bookUpdateDto.Id) return BadRequest("ID mismatch in route and body.");
 
+            // Assuming exceptions from service are handled by ErrorHandlingMiddleware
             await _bookService.UpdateBookAsync(bookUpdateDto);
-            // NotFoundException or ValidationException handled by ErrorHandlingMiddleware
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize(Roles = Roles.Admin)]
+        [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> DeleteBook(int id)
         {
+            // Assuming exceptions from service are handled by ErrorHandlingMiddleware
             await _bookService.DeleteBookAsync(id);
-            // NotFoundException handled by ErrorHandlingMiddleware
             return StatusCode(HttpStatusCode.NoContent);
         }
     }
