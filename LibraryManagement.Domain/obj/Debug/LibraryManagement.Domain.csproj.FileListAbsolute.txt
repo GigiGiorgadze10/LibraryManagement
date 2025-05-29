@@ -1,0 +1,12 @@
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\bin\Debug\LibraryManagement.Domain.dll.config
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\bin\Debug\LibraryManagement.Domain.dll
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\bin\Debug\LibraryManagement.Domain.pdb
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\bin\Debug\EntityFramework.dll
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\bin\Debug\EntityFramework.xml
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\obj\Debug\LibraryManagement.Domain.csproj.AssemblyReference.cache
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\obj\Debug\LibraryManagement.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\obj\Debug\LibraryManagement.Domain.csproj.CopyComplete
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\obj\Debug\LibraryManagement.Domain.dll
+C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Domain\obj\Debug\LibraryManagement.Domain.pdb

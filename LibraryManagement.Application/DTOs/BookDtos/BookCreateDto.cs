@@ -1,0 +1,28 @@
+﻿// src/LibraryManagementSystem.Application/DTOs/BookDtos/BookCreateDto.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace LibraryManagement.Application.DTOs.BookDtos
+{
+    public class BookCreateDto
+    {
+        [Required(ErrorMessage = "Book title is required.")]
+        [StringLength(200, ErrorMessage = "Title cannot exceed 200 characters.")]
+        public string Title { get; set; }
+
+        [Required(ErrorMessage = "Author ID is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Author ID must be a positive integer.")]
+        public int AuthorId { get; set; }
+
+        [Required(ErrorMessage = "Genre ID is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Genre ID must be a positive integer.")]
+        public int GenreId { get; set; }
+
+        [Required(ErrorMessage = "Number of pages is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Pages must be a positive integer.")]
+        public int Pages { get; set; }
+
+        [Required(ErrorMessage = "Publication year is required.")]
+        // Further validation for year range can be done in FluentValidation or service layer
+        public int PublicationYear { get; set; }
+    }
+}
