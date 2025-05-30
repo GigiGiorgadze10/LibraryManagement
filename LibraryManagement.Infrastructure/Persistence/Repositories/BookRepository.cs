@@ -1,13 +1,12 @@
-﻿using LibraryManagement.Infrastructure.Persistence.Repositories;
-using LibraryManagement.Infrastructure.Persistence;
+﻿// LibraryManagement.Infrastructure/Persistence/Repositories/BookRepository.cs
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Interfaces;
+using LibraryManagement.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity; 
+using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace LibraryManagement.Infrastructure.Persistence.Repositories
@@ -26,26 +25,15 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
             int? genreId,
             int? authorId,
             string sortBy,
-            SortDirection sortDirection)
+            SortDirection sortDirection) // sortDirection will have its default (Asc) if not provided
         {
-            var query = DbSet.Include(b => b.Author).Include(b => b.Genre).AsQueryable();
+            IQueryable<Book> query = DbSet.Include(b => b.Author).Include(b => b.Genre);
 
-            if (minPages.HasValue)
-            {
-                query = query.Where(b => b.Pages >= minPages.Value);
-            }
-            if (maxPages.HasValue)
-            {
-                query = query.Where(b => b.Pages <= maxPages.Value);
-            }
-            if (genreId.HasValue)
-            {
-                query = query.Where(b => b.GenreId == genreId.Value);
-            }
-            if (authorId.HasValue)
-            {
-                query = query.Where(b => b.AuthorId == authorId.Value);
-            }
+            // Apply Filtering
+            if (minPages.HasValue) query = query.Where(b => b.Pages >= minPages.Value);
+            if (maxPages.HasValue) query = query.Where(b => b.Pages <= maxPages.Value);
+            if (genreId.HasValue) query = query.Where(b => b.GenreId == genreId.Value);
+            if (authorId.HasValue) query = query.Where(b => b.AuthorId == authorId.Value);
 
             var totalCount = await query.CountAsync();
 
@@ -54,33 +42,39 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
             if (!string.IsNullOrWhiteSpace(sortBy))
             {
                 string sortByLower = sortBy.ToLowerInvariant();
-                if (sortByLower == "title")
+                switch (sortByLower) // Using switch statement for clarity
                 {
-                    orderedQuery = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.Title) : query.OrderByDescending(b => b.Title);
-                }
-                else if (sortByLower == "pages")
-                {
-                    orderedQuery = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.Pages) : query.OrderByDescending(b => b.Pages);
-                }
-                else if (sortByLower == "publicationyear")
-                {
-                    orderedQuery = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.PublicationYear) : query.OrderByDescending(b => b.PublicationYear);
+                    case "title":
+                        orderedQuery = sortDirection == SortDirection.Asc
+                            ? query.OrderBy(b => b.Title)
+                            : query.OrderByDescending(b => b.Title);
+                        break;
+                    case "pages":
+                        orderedQuery = sortDirection == SortDirection.Asc
+                            ? query.OrderBy(b => b.Pages)
+                            : query.OrderByDescending(b => b.Pages);
+                        break;
+                    case "publicationyear":
+                        orderedQuery = sortDirection == SortDirection.Asc
+                            ? query.OrderBy(b => b.PublicationYear)
+                            : query.OrderByDescending(b => b.PublicationYear);
+                        break;
                 }
             }
 
-            // Assign the sorted query back or apply default sort
             if (orderedQuery != null)
             {
-                // Add a secondary sort for deterministic ordering if primary keys are the same
-                query = orderedQuery.ThenBy(b => b.Id);
+                query = orderedQuery.ThenBy(b => b.Id); // Apply specified sort then by ID
             }
             else
             {
-                // Default sort by Id if no valid sortBy is provided or if sortBy was empty
-                query = query.OrderBy(b => b.Id);
+                // ✅ MODIFIED: Default sort now respects sortDirection parameter
+                query = sortDirection == SortDirection.Desc
+                    ? query.OrderByDescending(b => b.Id) // Default sort by Id DESC
+                    : query.OrderBy(b => b.Id);          // Default sort by Id ASC
             }
 
-            if (pageNumber < 1) pageNumber = 1; // Ensure pageNumber is at least 1
+            if (pageNumber < 1) pageNumber = 1;
             var books = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
             return (books, totalCount);
