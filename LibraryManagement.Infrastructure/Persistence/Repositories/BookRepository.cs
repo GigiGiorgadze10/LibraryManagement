@@ -28,44 +28,59 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
             string sortBy,
             SortDirection sortDirection)
         {
-            var query = DbSet.Include(b => b.Author).Include(b => b.Genre).AsQueryable(); 
+            var query = DbSet.Include(b => b.Author).Include(b => b.Genre).AsQueryable();
 
             if (minPages.HasValue)
+            {
                 query = query.Where(b => b.Pages >= minPages.Value);
+            }
             if (maxPages.HasValue)
+            {
                 query = query.Where(b => b.Pages <= maxPages.Value);
+            }
             if (genreId.HasValue)
+            {
                 query = query.Where(b => b.GenreId == genreId.Value);
+            }
             if (authorId.HasValue)
+            {
                 query = query.Where(b => b.AuthorId == authorId.Value);
+            }
 
             var totalCount = await query.CountAsync();
+
+            IOrderedQueryable<Book> orderedQuery = null;
 
             if (!string.IsNullOrWhiteSpace(sortBy))
             {
                 string sortByLower = sortBy.ToLowerInvariant();
                 if (sortByLower == "title")
                 {
-                    query = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.Title) : query.OrderByDescending(b => b.Title);
+                    orderedQuery = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.Title) : query.OrderByDescending(b => b.Title);
                 }
                 else if (sortByLower == "pages")
                 {
-                    query = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.Pages) : query.OrderByDescending(b => b.Pages);
+                    orderedQuery = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.Pages) : query.OrderByDescending(b => b.Pages);
                 }
                 else if (sortByLower == "publicationyear")
                 {
-                    query = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.PublicationYear) : query.OrderByDescending(b => b.PublicationYear);
+                    orderedQuery = sortDirection == SortDirection.Asc ? query.OrderBy(b => b.PublicationYear) : query.OrderByDescending(b => b.PublicationYear);
                 }
-                else
-                {
-                    query = query.OrderBy(b => b.Id); 
-                }
+            }
+
+            // Assign the sorted query back or apply default sort
+            if (orderedQuery != null)
+            {
+                // Add a secondary sort for deterministic ordering if primary keys are the same
+                query = orderedQuery.ThenBy(b => b.Id);
             }
             else
             {
-                query = query.OrderBy(b => b.Id); 
+                // Default sort by Id if no valid sortBy is provided or if sortBy was empty
+                query = query.OrderBy(b => b.Id);
             }
 
+            if (pageNumber < 1) pageNumber = 1; // Ensure pageNumber is at least 1
             var books = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
             return (books, totalCount);

@@ -26,7 +26,6 @@ namespace LibraryManagement.Api.Controllers
         [Route("")]
         [Authorize(Roles = Roles.User + "," + Roles.Admin)]
         [ResponseType(typeof(PaginatedBookResultDto))]
-  
         public async Task<IHttpActionResult> GetBooks([FromUri] BookFilterDto filter)
         {
             if (filter == null) filter = new BookFilterDto(); 

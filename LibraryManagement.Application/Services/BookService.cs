@@ -50,7 +50,8 @@ namespace LibraryManagement.Application.Services
                 filter.GenreId,
                 filter.AuthorId,
                 filter.SortBy,
-                filter.SortDirection);
+                filter.SortDirection
+            );
 
             var bookDtos = _mapper.Map<IEnumerable<BookReadDto>>(books);
 
