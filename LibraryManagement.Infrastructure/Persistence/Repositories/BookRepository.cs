@@ -1,5 +1,4 @@
-﻿// LibraryManagement.Infrastructure/Persistence/Repositories/BookRepository.cs
-using LibraryManagement.Domain.Entities;
+﻿using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Interfaces;
 using LibraryManagement.Infrastructure.Persistence;
@@ -25,7 +24,7 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
             int? genreId,
             int? authorId,
             string sortBy,
-            SortDirection sortDirection) // sortDirection will have its default (Asc) if not provided
+            SortDirection sortDirection) 
         {
             IQueryable<Book> query = DbSet.Include(b => b.Author).Include(b => b.Genre);
 
@@ -42,7 +41,7 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
             if (!string.IsNullOrWhiteSpace(sortBy))
             {
                 string sortByLower = sortBy.ToLowerInvariant();
-                switch (sortByLower) // Using switch statement for clarity
+                switch (sortByLower)
                 {
                     case "title":
                         orderedQuery = sortDirection == SortDirection.Asc
@@ -64,14 +63,13 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
 
             if (orderedQuery != null)
             {
-                query = orderedQuery.ThenBy(b => b.Id); // Apply specified sort then by ID
+                query = orderedQuery.ThenBy(b => b.Id); 
             }
             else
             {
-                // ✅ MODIFIED: Default sort now respects sortDirection parameter
                 query = sortDirection == SortDirection.Desc
-                    ? query.OrderByDescending(b => b.Id) // Default sort by Id DESC
-                    : query.OrderBy(b => b.Id);          // Default sort by Id ASC
+                    ? query.OrderByDescending(b => b.Id) 
+                    : query.OrderBy(b => b.Id);          
             }
 
             if (pageNumber < 1) pageNumber = 1;
