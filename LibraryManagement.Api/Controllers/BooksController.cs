@@ -25,21 +25,15 @@ namespace LibraryManagement.Api.Controllers
         [HttpGet]
         [Route("")]
         [Authorize(Roles = Roles.User + "," + Roles.Admin)]
-        [ResponseType(typeof(IEnumerable<BookReadDto>))] 
+        [ResponseType(typeof(PaginatedBookResultDto))]
+  
         public async Task<IHttpActionResult> GetBooks([FromUri] BookFilterDto filter)
         {
-            if (filter == null) filter = new BookFilterDto();
-            var result = await _bookService.GetBooksAsync(filter);
+            if (filter == null) filter = new BookFilterDto(); 
 
-            IOwinContext owinContext = Request.GetOwinContext();
-            if (owinContext != null) 
-            {
-                owinContext.Response.Headers.Add("X-Pagination-TotalCount", new[] { result.TotalCount.ToString() });
-                owinContext.Response.Headers.Add("X-Pagination-TotalPages", new[] { result.TotalPages.ToString() });
-                owinContext.Response.Headers.Add("X-Pagination-CurrentPage", new[] { result.CurrentPage.ToString() });
-                owinContext.Response.Headers.Add("X-Pagination-PageSize", new[] { result.PageSize.ToString() });
-            }
-            return Ok(result.Items); 
+            var paginatedResult = await _bookService.GetBooksAsync(filter);
+            return Ok(paginatedResult);
+
         }
 
         [HttpGet]
