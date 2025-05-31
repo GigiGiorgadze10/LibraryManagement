@@ -3,6 +3,7 @@ using LibraryManagement.Infrastructure.Identity;
 using LibraryManagement.Infrastructure.Persistence.Configurations;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
+
 namespace LibraryManagement.Infrastructure.Persistence
 {
     public class AppDbContext : IdentityDbContext<AppUser>

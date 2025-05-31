@@ -142,13 +142,9 @@
     <Compile Include="Identity\AppUserManager.cs" />
     <Compile Include="Identity\JwtTokenGenerator.cs" />
     <Compile Include="Identity\Roles.cs" />
-    <Compile Include="Migrations\202505291100101_InitialCreate.cs" />
-    <Compile Include="Migrations\202505291100101_InitialCreate.designer.cs">
-      <DependentUpon>202505291100101_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202505291122321_FixAppUserMapping.cs" />
-    <Compile Include="Migrations\202505291122321_FixAppUserMapping.designer.cs">
-      <DependentUpon>202505291122321_FixAppUserMapping.cs</DependentUpon>
+    <Compile Include="Migrations\202505302351302_InitialCreate.cs" />
+    <Compile Include="Migrations\202505302351302_InitialCreate.designer.cs">
+      <DependentUpon>202505302351302_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persistence\AppDbContext.cs" />
@@ -179,11 +175,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202505291100101_InitialCreate.resx">
-      <DependentUpon>202505291100101_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202505291122321_FixAppUserMapping.resx">
-      <DependentUpon>202505291122321_FixAppUserMapping.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202505302351302_InitialCreate.resx">
+      <DependentUpon>202505302351302_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

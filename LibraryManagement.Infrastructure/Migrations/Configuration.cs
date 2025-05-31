@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagement.Infrastructure.Migrations
 {
-    using LibraryManagement.Infrastructure.Persistence; 
+    using LibraryManagement.Infrastructure.Persistence;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -11,8 +11,7 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            // Optional: You can set a ContextKey if you have multiple DbContexts targeting the same database,
-            // but it's often set automatically to the fully qualified name of your DbContext.
+
             ContextKey = "LibraryManagement.Infrastructure.Persistence.AppDbContext";
         }
 
@@ -21,17 +20,7 @@
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
-            //  to avoid creating duplicate seed data. For example:
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
-
-         
+            //  to avoid creating duplicate seed data.
             DbInitializer.Seed(context);
         }
     }

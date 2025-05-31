@@ -73,7 +73,6 @@ C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Infrastruct
 C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Infrastructure\bin\Debug\AutoMapper.xml
 C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Infrastructure\obj\Debug\LibraryManagement.Infrastructure.csproj.AssemblyReference.cache
 C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Infrastructure\obj\Debug\LibraryManagement.Infrastructure.Migrations.InitialCreate.resources
-C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Infrastructure\obj\Debug\LibraryManagement.Infrastructure.Migrations.FixAppUserMapping.resources
 C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Infrastructure\obj\Debug\LibraryManagement.Infrastructure.csproj.GenerateResource.cache
 C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Infrastructure\obj\Debug\LibraryManagement.Infrastructure.csproj.CoreCompileInputs.cache
 C:\Users\Nini\Desktop\New folder\LibraryManagement\LibraryManagement.Infrastructure\obj\Debug\LibraryManagement.Infrastructure.csproj.CopyComplete

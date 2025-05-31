@@ -28,7 +28,6 @@ namespace LibraryManagement.Infrastructure.Persistence.Repositories
         {
             IQueryable<Book> query = DbSet.Include(b => b.Author).Include(b => b.Genre);
 
-            // Apply Filtering
             if (minPages.HasValue) query = query.Where(b => b.Pages >= minPages.Value);
             if (maxPages.HasValue) query = query.Where(b => b.Pages <= maxPages.Value);
             if (genreId.HasValue) query = query.Where(b => b.GenreId == genreId.Value);
