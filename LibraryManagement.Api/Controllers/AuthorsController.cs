@@ -4,6 +4,7 @@ using LibraryManagement.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http; 
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -37,12 +38,12 @@ namespace LibraryManagement.Api.Controllers
         public async Task<IHttpActionResult> GetAuthor(int id)
         {
             var author = await _authorService.GetAuthorByIdAsync(id);
-            return Ok(author);
+            return Ok(author); 
         }
 
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = Roles.Admin)] 
+        [Authorize(Roles = Roles.Admin)]
         [ResponseType(typeof(AuthorReadDto))]
         public async Task<IHttpActionResult> CreateAuthor([FromBody] AuthorCreateDto authorCreateDto)
         {
@@ -51,35 +52,56 @@ namespace LibraryManagement.Api.Controllers
                 return BadRequest(ModelState);
             }
             var createdAuthor = await _authorService.CreateAuthorAsync(authorCreateDto);
-            return CreatedAtRoute("GetAuthorById", new { id = createdAuthor.Id }, createdAuthor);
+
+            string locationUri = null;
+            try
+            {
+                locationUri = Url.Link("GetAuthorById", new { id = createdAuthor.Id });
+            }
+            catch (NotImplementedException nie)
+            {
+                System.Diagnostics.Trace.TraceWarning($"CreateAuthor: Url.Link failed with NotImplementedException: {nie.Message}. HttpContextBase.Response might be unavailable. Falling back.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceWarning($"CreateAuthor: Error generating Location URI: {ex.Message}");
+            }
+
+            if (locationUri != null)
+            {
+                return Created(locationUri, createdAuthor);
+            }
+            else
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Created, createdAuthor);
+                System.Diagnostics.Debug.WriteLine("CreateAuthor: Fallback response used due to Url.Link failure.");
+                return ResponseMessage(response);
+            }
         }
 
         [HttpPut]
-        [Route("{id:int}")]
-        [Authorize(Roles = Roles.Admin)] 
-        [ResponseType(typeof(void))] 
-        public async Task<IHttpActionResult> UpdateAuthor(int id, [FromBody] AuthorUpdateDto authorUpdateDto)
+        [Route("")] 
+        [Authorize(Roles = Roles.Admin)]
+        [ResponseType(typeof(AuthorUpdateDto))] 
+        public async Task<IHttpActionResult> UpdateAuthor([FromBody] AuthorUpdateDto authorUpdateDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (id != authorUpdateDto.Id)
-            {
-                return BadRequest("ID mismatch in route and body.");
-            }
+
             await _authorService.UpdateAuthorAsync(authorUpdateDto);
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(authorUpdateDto);
         }
 
         [HttpDelete]
         [Route("{id:int}")]
-        [Authorize(Roles = Roles.Admin)] 
-        [ResponseType(typeof(void))] 
+        [Authorize(Roles = Roles.Admin)]
+        [ResponseType(typeof(object))]
         public async Task<IHttpActionResult> DeleteAuthor(int id)
         {
             await _authorService.DeleteAuthorAsync(id);
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(new { message = $"Author with ID {id} was successfully deleted." });
         }
     }
 }

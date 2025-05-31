@@ -1,11 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagement.Application.DTOs.AuthorDtos
 {
     public class AuthorUpdateDto
     {
-        [Required]
+        [Required(ErrorMessage = "ID is required for update.")] 
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Author full name is required.")]
@@ -13,6 +12,6 @@ namespace LibraryManagement.Application.DTOs.AuthorDtos
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "Author birth date is required.")]
-        public DateTime BirthDate { get; set; }
+        public System.DateTime BirthDate { get; set; }
     }
 }
