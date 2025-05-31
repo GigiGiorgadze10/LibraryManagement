@@ -58,26 +58,27 @@ namespace LibraryManagement.Api.Controllers
         }
 
         [HttpPut]
-        [Route("{id:int}")]
+        [Route()]
         [Authorize(Roles = Roles.Admin)]
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> UpdateBook(int id, [FromBody] BookUpdateDto bookUpdateDto)
+        [ResponseType(typeof(BookUpdateDto))]
+        public async Task<IHttpActionResult> UpdateBook([FromBody] BookUpdateDto bookUpdateDto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (id != bookUpdateDto.Id) return BadRequest("ID mismatch in route and body.");
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             await _bookService.UpdateBookAsync(bookUpdateDto);
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+            return Ok(bookUpdateDto);
+        }       
 
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize(Roles = Roles.Admin)]
-        [ResponseType(typeof(void))]
+        [ResponseType(typeof(object))]
         public async Task<IHttpActionResult> DeleteBook(int id)
         {
             await _bookService.DeleteBookAsync(id);
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(new { message = $"Author with ID {id} was successfully deleted." });
         }
     }
 }
