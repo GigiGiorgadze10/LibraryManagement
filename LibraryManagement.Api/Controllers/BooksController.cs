@@ -78,7 +78,7 @@ namespace LibraryManagement.Api.Controllers
         public async Task<IHttpActionResult> DeleteBook(int id)
         {
             await _bookService.DeleteBookAsync(id);
-            return Ok(new { message = $"Author with ID {id} was successfully deleted." });
+            return Ok(new { message = $"Book with ID {id} was successfully deleted." });
         }
     }
 }

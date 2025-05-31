@@ -1,4 +1,6 @@
-﻿using LibraryManagement.Application.DTOs.GenreDtos;
+﻿using LibraryManagement.Application.DTOs.BookDtos;
+using LibraryManagement.Application.DTOs.GenreDtos;
+using LibraryManagement.Application.Services;
 using LibraryManagement.Application.Services.Interfaces;
 using LibraryManagement.Infrastructure.Identity;
 using System.Collections.Generic;
@@ -54,32 +56,27 @@ namespace LibraryManagement.Api.Controllers
         }
 
         [HttpPut]
-        [Route("{id:int}")]
+        [Route("")]
         [Authorize(Roles = Roles.Admin)] 
-        [ResponseType(typeof(void))]     
-        public async Task<IHttpActionResult> UpdateGenre(int id, [FromBody] GenreUpdateDto genreUpdateDto)
+        [ResponseType(typeof(GenreUpdateDto))]
+        public async Task<IHttpActionResult> UpdateGenre([FromBody] GenreUpdateDto GenreUpdateDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (id != genreUpdateDto.Id)
-            {
-                return BadRequest("ID mismatch in route and body.");
-            }
-
-            await _genreService.UpdateGenreAsync(genreUpdateDto);
-            return StatusCode(HttpStatusCode.NoContent);
+            await _genreService.UpdateGenreAsync(GenreUpdateDto);
+            return Ok(GenreUpdateDto);
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         [Authorize(Roles = Roles.Admin)] 
-        [ResponseType(typeof(void))]    
+        [ResponseType(typeof(object))]    
         public async Task<IHttpActionResult> DeleteGenre(int id)
         {
             await _genreService.DeleteGenreAsync(id);
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(new { message = $"Genre with ID {id} was successfully deleted." });
         }
     }
 }
