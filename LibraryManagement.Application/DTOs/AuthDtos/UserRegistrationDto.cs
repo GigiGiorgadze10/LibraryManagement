@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/DTOs/AuthDtos/UserRegistrationDto.cs
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagement.Application.DTOs.AuthDtos
 {

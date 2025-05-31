@@ -1,6 +1,5 @@
-﻿// src/LibraryManagementSystem.Infrastructure/Identity/AppUserManager.cs
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework; // For UserStore, RoleStore, IdentityRole
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using LibraryManagement.Infrastructure.Persistence; 

@@ -1,5 +1,4 @@
-﻿// src/LibraryManagementSystem.Application/Mappings/MappingProfile.cs
-using AutoMapper;
+﻿using AutoMapper;
 using LibraryManagement.Application.Contracts.Infrastructure;
 using LibraryManagement.Application.DTOs.AuthorDtos;
 using LibraryManagement.Application.DTOs.BookDtos;
