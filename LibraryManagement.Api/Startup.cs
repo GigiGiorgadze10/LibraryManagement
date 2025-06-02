@@ -92,6 +92,8 @@ namespace LibraryManagement.Api
 
             app.UseAutofacMiddleware(container);
 
+            app.Use<LoggingMiddleware>();
+
             app.Use<ErrorHandlingMiddleware>();
             ConfigureOAuth(app, container); 
             app.UseWebApi(config);
